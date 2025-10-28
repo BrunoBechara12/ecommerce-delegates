@@ -3,6 +3,9 @@
 public class ItemOrder
 {
     public int Id { get; set; }
+    public int Quantity { get; set; }
+    public decimal UnitValue { get; set; }
+    public decimal TotalValue { get; set; }
     public int OrderId { get; set; }
     public int ProductId { get; set; }
 
