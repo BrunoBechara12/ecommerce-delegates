@@ -9,10 +9,8 @@ public class Product
     public bool Active { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
-    public int categoryId { get; set; }
+    public int CategoryId { get; set; }
 
     public Category Category { get; set; }
     public List<ItemOrder> ItemOrders { get; set; }
-    public List<Order> orders { get; set; }
-
 }
