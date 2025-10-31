@@ -1,4 +1,6 @@
+using Microsoft.EntityFrameworkCore;
 using OrderEvent.Controllers;
+using OrderEvent.Data;
 using OrderEvent.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,14 +11,20 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
-builder.Services.AddSingleton<OrderService>();
-builder.Services.AddSingleton<EmailService>();
-builder.Services.AddSingleton<StockService>();
-builder.Services.AddSingleton<DeliveryService>();
+builder.Services.AddScoped<CategoryService>();
+builder.Services.AddScoped<OrderService>();
+builder.Services.AddScoped<EmailService>();
+builder.Services.AddScoped<StockService>();
+builder.Services.AddScoped<DeliveryService>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddDbContext<AppDbContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+});
 
 var app = builder.Build();
 
