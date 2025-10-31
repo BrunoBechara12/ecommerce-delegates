@@ -22,4 +22,12 @@ public class CategoryController : ControllerBase
 
         return Ok(createdCategory);
     }
+
+    [HttpPut("{idCategory}")]
+    public async Task<ActionResult<Order>> updateCategory([FromBody] UpsertCategoryDto category, int idCategory)
+    {
+        var updatedCategory = await _categoryService.updateCategory(category, idCategory);
+
+        return Ok(updatedCategory);
+    }
 }

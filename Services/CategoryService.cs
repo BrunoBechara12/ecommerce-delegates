@@ -29,4 +29,23 @@ public class CategoryService
 
         return createdCategory;
     }
+
+    public async Task<Category> updateCategory(UpsertCategoryDto category, int idCategory)
+    {
+        var updateCategory = _context.Categories.FirstOrDefault(a => a.Id == idCategory);
+
+        if(updateCategory != null)
+        {
+            updateCategory.Name = category.Name;
+            updateCategory.Description = category.Description;
+            updateCategory.Active = category.Active;
+            updateCategory.UpdatedAt = DateTime.Now;
+
+            _context.Update(updateCategory);
+
+            await _context.SaveChangesAsync();
+        }
+
+        return updateCategory;
+    }
 }
