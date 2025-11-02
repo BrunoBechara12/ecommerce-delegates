@@ -38,4 +38,12 @@ public class CategoryController : ControllerBase
 
         return Ok(updatedCategory);
     }
+
+    [HttpDelete("{idCategory}")]
+    public async Task<ActionResult<Order>> deleteCategory(int idCategory)
+    {
+        var updatedCategory = await _categoryService.deleteCategory(idCategory);
+
+        return Ok(updatedCategory);
+    }
 }

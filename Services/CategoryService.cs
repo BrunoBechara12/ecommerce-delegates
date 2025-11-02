@@ -56,4 +56,18 @@ public class CategoryService
 
         return updateCategory;
     }
+
+    public async Task<Category> deleteCategory(int idCategory)
+    {
+        var deleteCategory = _context.Categories.FirstOrDefault(a => a.Id == idCategory);
+
+        if (deleteCategory != null)
+        {
+            _context.Remove(deleteCategory);
+
+            await _context.SaveChangesAsync();
+        }
+
+        return deleteCategory;
+    }
 }
