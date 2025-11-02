@@ -15,6 +15,14 @@ public class CategoryController : ControllerBase
         _categoryService = categoryService;
     }
 
+    [HttpGet]
+    public async Task<ActionResult<Order>> GetCategories()
+    {
+        var createdCategory = await _categoryService.getCategories();
+
+        return Ok(createdCategory);
+    }
+
     [HttpPost]
     public async Task<ActionResult<Order>> CreateCategory([FromBody] UpsertCategoryDto category)
     {

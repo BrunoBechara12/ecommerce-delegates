@@ -14,6 +14,14 @@ public class CategoryService
     {
         _context = context;
     }
+
+    public async Task<List<Category>> getCategories()
+    {
+        var categories = await _context.Categories.ToListAsync();
+
+        return categories;
+    }
+
     public async Task<Category> createCategory (UpsertCategoryDto category)
     {
         var createdCategory = new Category()
