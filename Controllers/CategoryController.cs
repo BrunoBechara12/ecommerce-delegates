@@ -16,15 +16,15 @@ public class CategoryController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<Order>> GetCategories()
+    public async Task<ActionResult<Category>> GetCategories()
     {
-        var createdCategory = await _categoryService.getCategories();
+        var categories = await _categoryService.getCategories();
 
-        return Ok(createdCategory);
+        return Ok(categories);
     }
 
     [HttpPost]
-    public async Task<ActionResult<Order>> CreateCategory([FromBody] UpsertCategoryDto category)
+    public async Task<ActionResult<Category>> CreateCategory([FromBody] UpsertCategoryDto category)
     {
         var createdCategory = await _categoryService.createCategory(category);
 
@@ -32,7 +32,7 @@ public class CategoryController : ControllerBase
     }
 
     [HttpPut("{idCategory}")]
-    public async Task<ActionResult<Order>> updateCategory([FromBody] UpsertCategoryDto category, int idCategory)
+    public async Task<ActionResult<Category>> updateCategory([FromBody] UpsertCategoryDto category, int idCategory)
     {
         var updatedCategory = await _categoryService.updateCategory(category, idCategory);
 
@@ -40,7 +40,7 @@ public class CategoryController : ControllerBase
     }
 
     [HttpDelete("{idCategory}")]
-    public async Task<ActionResult<Order>> deleteCategory(int idCategory)
+    public async Task<ActionResult<Category>> deleteCategory(int idCategory)
     {
         var updatedCategory = await _categoryService.deleteCategory(idCategory);
 
