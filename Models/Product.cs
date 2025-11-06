@@ -1,4 +1,6 @@
-﻿namespace OrderEvent.Models;
+﻿using EcommerceDelegates.Models;
+
+namespace OrderEvent.Models;
 
 public class Product
 {
@@ -11,6 +13,7 @@ public class Product
     public DateTime? UpdatedAt { get; set; }
     public int CategoryId { get; set; }
 
+    public Stock Stock { get; set; }
     public Category Category { get; set; }    
     public List<ItemOrder> ItemOrders { get; set; }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using EcommerceDelegates.Models;
+using Microsoft.EntityFrameworkCore;
 using OrderEvent.Models;
 
 namespace OrderEvent.Data;
@@ -12,6 +13,7 @@ public class AppDbContext : DbContext
     public DbSet<Invoice> Invoices { get; set; }
     public DbSet<ItemOrder> ItemOrders { get; set; }
     public DbSet<Product> Products { get; set; }
+    public DbSet<Stock> Stocks { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -36,5 +38,11 @@ public class AppDbContext : DbContext
             .HasOne(o => o.Invoice)
             .WithOne(i => i.Order)
             .HasForeignKey<Invoice>(i => i.OrderId);
+
+        modelBuilder.Entity<Product>()
+           .HasOne(o => o.Stock)
+           .WithOne(i => i.Product)
+           .HasForeignKey<Stock>(io => io.ProductId)
+           .OnDelete(DeleteBehavior.Cascade);
     }
 }
