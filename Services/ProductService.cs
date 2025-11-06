@@ -48,21 +48,24 @@ public class ProductService
     {
         var updateProduct = _context.Products.FirstOrDefault(a => a.Id == idProduct);
 
+        if (updateProduct == null)
+            throw new Exception("Produto não encontrado");
+
         var category = await _context.Categories.FirstOrDefaultAsync(c => c.Id == product.CategoryId);
 
-        if (updateProduct != null)
-        {
-            updateProduct.Name = product.Name;
-            updateProduct.Description = product.Description;
-            updateProduct.Price = product.Price;
-            updateProduct.Active = product.Active;
-            updateProduct.Category = category;
-            updateProduct.UpdatedAt = DateTime.Now;
+        if (category == null)
+            throw new Exception("Categoria não encontrada");
 
-            _context.Update(updateProduct);
+        updateProduct.Name = product.Name;
+        updateProduct.Description = product.Description;
+        updateProduct.Price = product.Price;
+        updateProduct.Active = product.Active;
+        updateProduct.Category = category;
+        updateProduct.UpdatedAt = DateTime.Now;
 
-            await _context.SaveChangesAsync();
-        }
+        _context.Update(updateProduct);
+
+        await _context.SaveChangesAsync();
 
         return updateProduct;
     }
@@ -71,12 +74,12 @@ public class ProductService
     {
         var deleteProduct = _context.Products.FirstOrDefault(a => a.Id == idProduct);
 
-        if (deleteProduct != null)
-        {
-            _context.Remove(deleteProduct);
+        if (deleteProduct == null)
+            throw new Exception("Produto não encontrado");
 
-            await _context.SaveChangesAsync();
-        }
+        _context.Remove(deleteProduct);
+
+        await _context.SaveChangesAsync();
 
         return deleteProduct;
     }
