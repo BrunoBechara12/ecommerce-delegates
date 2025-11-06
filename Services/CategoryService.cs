@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OrderEvent.Data;
-using OrderEvent.Dto;
 using OrderEvent.Dtos.Category;
 using OrderEvent.Models;
 
@@ -15,14 +14,14 @@ public class CategoryService
         _context = context;
     }
 
-    public async Task<List<Category>> getCategories()
+    public async Task<List<Category>> GetCategories()
     {
         var categories = await _context.Categories.ToListAsync();
 
         return categories;
     }
 
-    public async Task<Category> createCategory (UpsertCategoryDto category)
+    public async Task<Category> CreateCategory(UpsertCategoryDto category)
     {
         var createdCategory = new Category()
         {
@@ -32,13 +31,13 @@ public class CategoryService
             CreatedAt = DateTime.Now
         };
 
-        _context.Categories.AddAsync(createdCategory);
+        await _context.Categories.AddAsync(createdCategory);
         await _context.SaveChangesAsync();
 
         return createdCategory;
     }
 
-    public async Task<Category> updateCategory(UpsertCategoryDto category, int idCategory)
+    public async Task<Category> UpdateCategory(UpsertCategoryDto category, int idCategory)
     {
         var updateCategory = _context.Categories.FirstOrDefault(a => a.Id == idCategory);
 
@@ -57,7 +56,7 @@ public class CategoryService
         return updateCategory;
     }
 
-    public async Task<Category> deleteCategory(int idCategory)
+    public async Task<Category> DeleteCategory(int idCategory)
     {
         var deleteCategory = _context.Categories.FirstOrDefault(a => a.Id == idCategory);
 

@@ -1,4 +1,5 @@
-﻿using EcommerceEvents.Dtos.Product;
+﻿using EcommerceDelegates.Models;
+using EcommerceEvents.Dtos.Product;
 using Microsoft.EntityFrameworkCore;
 using OrderEvent.Data;
 using OrderEvent.Models;
@@ -14,14 +15,14 @@ public class ProductService
         _context = context;
     }
 
-    public async Task<List<Product>> getProducts()
+    public async Task<List<Product>> GetProducts()
     {
         var products = await _context.Products.ToListAsync();
 
         return products;
     }
 
-    public async Task<Product> createProduct(UpsertProductDto product)
+    public async Task<Product> CreateProduct(UpsertProductDto product)
     {
         var category = await _context.Categories.FirstOrDefaultAsync(c => c.Id == product.CategoryId);
 
@@ -43,8 +44,7 @@ public class ProductService
 
         return createdProduct;
     }
-
-    public async Task<Product> updateProduct(UpsertProductDto product, int idProduct)
+    public async Task<Product> UpdateProduct(UpsertProductDto product, int idProduct)
     {
         var updateProduct = _context.Products.FirstOrDefault(a => a.Id == idProduct);
 
@@ -67,7 +67,7 @@ public class ProductService
         return updateProduct;
     }
 
-    public async Task<Product> deleteProduct(int idProduct)
+    public async Task<Product> DeleteProduct(int idProduct)
     {
         var deleteProduct = _context.Products.FirstOrDefault(a => a.Id == idProduct);
 

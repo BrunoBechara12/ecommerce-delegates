@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using OrderEvent.Dto;
 using OrderEvent.Dtos.Category;
 using OrderEvent.Models;
 using OrderEvent.Services;
@@ -18,7 +17,7 @@ public class CategoryController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<Category>> GetCategories()
     {
-        var categories = await _categoryService.getCategories();
+        var categories = await _categoryService.GetCategories();
 
         return Ok(categories);
     }
@@ -26,23 +25,23 @@ public class CategoryController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<Category>> CreateCategory([FromBody] UpsertCategoryDto category)
     {
-        var createdCategory = await _categoryService.createCategory(category);
+        var createdCategory = await _categoryService.CreateCategory(category);
 
         return Ok(createdCategory);
     }
 
     [HttpPut("{idCategory}")]
-    public async Task<ActionResult<Category>> updateCategory([FromBody] UpsertCategoryDto category, int idCategory)
+    public async Task<ActionResult<Category>> UpdateCategory([FromBody] UpsertCategoryDto category, int idCategory)
     {
-        var updatedCategory = await _categoryService.updateCategory(category, idCategory);
+        var updatedCategory = await _categoryService.UpdateCategory(category, idCategory);
 
         return Ok(updatedCategory);
     }
 
     [HttpDelete("{idCategory}")]
-    public async Task<ActionResult<Category>> deleteCategory(int idCategory)
+    public async Task<ActionResult<Category>> DeleteCategory(int idCategory)
     {
-        var updatedCategory = await _categoryService.deleteCategory(idCategory);
+        var updatedCategory = await _categoryService.DeleteCategory(idCategory);
 
         return Ok(updatedCategory);
     }
