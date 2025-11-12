@@ -1,10 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using EcommerceDelegates.Dtos.Order;
 using Microsoft.AspNetCore.Mvc;
-using OrderEvent.Dto;
+using OrderEvent.Models;
 using OrderEvent.Services;
 
 namespace OrderEvent.Controllers;
-[Route("api/[controller]")]
+[Route("api/orders")]
 [ApiController]
 public class OrderController : ControllerBase
 {
@@ -15,12 +15,11 @@ public class OrderController : ControllerBase
         _orderService = orderService;
     }
 
-    [HttpPost("CreateOrder")]
-    public void CreateOrder([FromBody] CreateOrderDto order)
+    [HttpPost]
+    public async Task<ActionResult<Order>> CreateOrder([FromBody] CreateOrderDto order)
     {
-       var createdOrder = _orderService.CreateOrder(order);
+        var orders = await _orderService.CreateOrder(order);
 
-        Console.WriteLine($"Pedido {createdOrder.Id} finalizado!");
-
+        return Ok(orders);
     }
 }

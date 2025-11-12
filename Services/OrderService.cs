@@ -1,4 +1,6 @@
-﻿using OrderEvent.Dto;
+﻿using EcommerceDelegates.Dtos.Order;
+using Microsoft.EntityFrameworkCore;
+using OrderEvent.Data;
 using OrderEvent.Models;
 
 namespace OrderEvent.Services;
@@ -10,24 +12,52 @@ public class OrderService
     public event OrderEventHandler? OnEventCreation;
     public event OrderEventHandler? OnEventValidation;
 
-    private List<Order> orderList = new();
+    public readonly AppDbContext _context;
 
-    public Order CreateOrder(CreateOrderDto order)
+    public OrderService(AppDbContext context)
     {
-        int Id = orderList.LastOrDefault() != null ? orderList.LastOrDefault()!.Id + 1 : 1;
+        _context = context;
+    }
 
-        Order createdOrder = new Order()
+    public async Task<Order> CreateOrder(CreateOrderDto order)
+    {
+        var createdOrder = new Order()
         {
-            Id = Id,
             Client = order.Client,
-            Product = order.Product,
-            OrderNumber = order.Order,
-            Quantity = order.Quantity,
-            TotalValue = order.TotalValue,
+            Product = new List<ItemOrder>(),
+            OrderNumber = Guid.NewGuid(),
             CreatedAt = DateTime.Now
         };
 
-        OnEventValidation?.Invoke(createdOrder);
+        decimal calculatedTotal = 0;
+
+        foreach (var item in order.Products)
+        {
+            var product = await _context.Products.FirstOrDefaultAsync(a => a.Id == item.ProductId);
+
+            if(product == null)
+            {
+                throw new Exception("Produto não encontrado!");
+            }
+
+            var productOrder = new ItemOrder
+            {
+                Quantity = item.Quantity,
+                UnitValue = item.UnitValue,
+                TotalValue = item.Quantity * item.UnitValue,
+                ProductId = item.ProductId,
+                Order = createdOrder
+            };
+
+            createdOrder.ItemOrders.Add(productOrder);
+            calculatedTotal += productOrder.TotalValue;
+        }
+
+        createdOrder.TotalValue = calculatedTotal;
+
+        await _context.Orders.AddAsync(createdOrder);
+
+        await _context.SaveChangesAsync();
 
         OnEventCreation?.Invoke(createdOrder);
 
